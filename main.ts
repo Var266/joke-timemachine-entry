@@ -1,16 +1,13 @@
-// SPDX-License-Identifier: MIT
-// Funniest Time Machine Warning Label — make.fun entry.
-// Writes a single original warning label (<= 120 characters) to /output/entry.txt.
 import { mkdirSync, writeFileSync } from "node:fs";
 
-const LABEL =
-  "WARNING: Do not use this machine to warn your past self. He never listens. You know this.";
+const label =
+  "WARNING: Passengers who kill their own grandfather will be charged a full return fare.";
 
-// The gate requires 1 to 120 characters of UTF-8 text, not only whitespace.
-// Fail loudly here rather than shipping an entry the gate would refuse.
-if (LABEL.length < 1 || LABEL.length > 120 || LABEL.trim().length === 0) {
-  throw new Error(`label is ${LABEL.length} characters; gate needs 1-120`);
+// Gate self-check: the competition allows 1-120 characters; never write an
+// over-gate label silently.
+if ([...label].length > 120) {
+  throw new Error(`label is ${[...label].length} chars, over the 120-char gate`);
 }
 
 mkdirSync("/output", { recursive: true });
-writeFileSync("/output/entry.txt", LABEL, "utf8");
+writeFileSync("/output/entry.txt", label, "utf8");
